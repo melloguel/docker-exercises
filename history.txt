@@ -1,0 +1,19 @@
+# Build image from Dockerfile
+docker build -f Dockerfile -t docker-exercise/caddy .
+
+# Run docker-exercise/caddy in background
+docker run --name caddy-server \
+           -d -p 8000:80 \
+	   docker-exercise/caddy
+
+# Stop and clean container 
+docker stop caddy-server && docker rm caddy-server
+
+# Run docker, but sharing pages directory, so we don't have to restart the container and rebuild the image
+docker run --name caddy-server \
+	   -d -p 8000:80 \
+           -v "$(pwd)/pages":/usr/src/pages \
+	   docker-exercise/caddy
+
+# When done stop and clean container
+docker stop caddy-server && docker rm caddy-server
